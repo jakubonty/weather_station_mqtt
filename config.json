@@ -2,6 +2,7 @@
   "name": "Weather Station MQTT",
   "version": "0.1",
   "slug": "weather_station_mqtt",
+  "url": "https://github.com/jakubonty/weather_station_mqtt",
   "description": "Port of maserver: https://github.com/sarnau/MMMMobileAlerts/tree/master/maserver",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "startup": "services",
