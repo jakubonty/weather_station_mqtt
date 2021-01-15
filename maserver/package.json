@@ -1,0 +1,14 @@
+{
+  "name": "MobileAlertsSensorServer",
+  "version": "1.0.0",
+  "description": "Mobile-Alerts Sensor Server with MQTT and log support",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "nconf": "*",
+    "mqtt": "*",
+    "express": "*",
+    "body-parser": "*",
+    "raw-body": "*",
+    "request": "*"
+  }
+}
