@@ -4,7 +4,7 @@ FROM $BUILD_FROM
 ENV LANG C.UTF-8
 
 # Copy data for add-on
-COPY run.sh /
+COPY data/run.sh /
 COPY maserver/* /
 
 RUN apk add --no-cache nodejs-npm
