@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CONFIG_PATH=/data/options.json
+export CONFIG_PATH=/data/options.json
 
 echo Hello!
 node -v

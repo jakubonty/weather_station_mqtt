@@ -8,7 +8,7 @@ const request = require('request');
 nconf.argv().env();
 
 // Then load configuration from a designated file.
-nconf.file({ file: '/data/options.json' });
+nconf.file({ file: process.env.CONFIG_PATH || '/data/options.json' });
 
 // Provide default values for settings not provided above.
 nconf.defaults({
