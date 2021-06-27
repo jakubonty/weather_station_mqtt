@@ -1,45 +1,46 @@
 {
-  "name": "Weather Station MQTT",
-  "version": "0.1",
-  "slug": "weather_station_mqtt",
-  "url": "https://github.com/jakubonty/weather_station_mqtt",
-  "description": "Port of maserver: https://github.com/sarnau/MMMMobileAlerts/tree/master/maserver",
-  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
-  "startup": "services",
-  "boot": "auto",
-  "schema": {
-    "localIPv4Address": "str",
-    "gatewayIPv4Address": "str",
-    "mqtt": "str",
-    "mqtt_home": "str",
-    "mqtt_username": "str",
-    "mqtt_password": "str",
+	"name": "Weather Station MQTT",
+	"version": "0.1",
+	"slug": "weather_station_mqtt",
+	"url": "https://github.com/jakubonty/weather_station_mqtt",
+	"description": "Port of maserver: https://github.com/sarnau/MMMMobileAlerts/tree/master/maserver",
+	"arch": [
+		"armhf",
+		"armv7",
+		"aarch64",
+		"amd64",
+		"i386"
+	],
+	"startup": "services",
+	"boot": "auto",
+	"schema": {
+		"localIPv4Address": "str",
+		"gatewayIPv4Address": "str",
+		"mqtt": "str",
+		"mqtt_home": "str",
+		"mqtt_username": "str",
+		"mqtt_password": "str",
+		"logfile": "str",
+		"logGatewayInfo": "bool",
+		"proxyServerPort": "int",
+		"mobileAlertsCloudForward": "bool"
+	},
+	"ports": {
+		"8080/tcp": 8080,
+		"8080/udp": 8080,
+		"8003/udp": 8003
+	},
+	"options": {
+		"localIPv4Address": "192.168.0.123",
+		"gatewayIPv4Address": "192.168.0.126",
+		"mqtt": "mqtt://192.168.0.123",
+		"mqtt_home": "MobileAlerts/",
+		"mqtt_username": "",
+		"mqtt_password": "",
+		"logfile": "./MobileAlerts.log",
+		"logGatewayInfo": true,
+		"proxyServerPort": 8080,
+		"mobileAlertsCloudForward": true
+	}
 
-    "logfile": "str",
-    "logGatewayInfo": "bool",
-
-    "proxyServerPort": "int",
-
-    "mobileAlertsCloudForward": "bool"
-  },
-  "ports": {
-    "8080/tcp": 8080,
-    "8080/udp": 8080,
-    "8003/udp": 8003
-  },
-  "options": {
-    "localIPv4Address": "192.168.0.123",
-    "gatewayIPv4Address": "192.168.0.126",
-    "mqtt": "mqtt://192.168.0.123",
-    "mqtt_home": "MobileAlerts/",
-    "mqtt_username": "",
-    "mqtt_password": "",
-
-    "logfile": "./MobileAlerts.log",
-    "logGatewayInfo": true,
-
-    "proxyServerPort": 8080,
-
-    "mobileAlertsCloudForward": true
-  }
 }

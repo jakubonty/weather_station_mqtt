@@ -80,10 +80,13 @@ SensorBase.prototype.setup = function(buffer) {
   // The TX value is 16 or 24 bit, based on the sensor ID.
   // This also changes the offset where the data starts
   this.getTXAndBufferOffset();
-
+  
+  this.getBatteryLevel();
+  
   this.json = this.generateJSON(buffer.slice(this.bufferOffset));
   this.json.id = this.ID
   this.json.t = this.unixTime
+  this.json.isBatteryOk = this.batteryOk
   return this;
 }
 
@@ -167,11 +170,20 @@ SensorBase.prototype.getTXAndBufferOffset = function() {
   this.tx = this.buffer.readUInt16BE(12);
   this.bufferOffset = 14;
 };
+// Default implementation for all but the wind sensor: tx is 16 bits wide.
+SensorBase.prototype.getBatteryLevel = function() {
+  if(this.buffer.readUInt16BE(12)>>15 == 0 ){
+    this.batteryOk = true 
+  }else{
+    this.batteryOk = false
+  }
+};
 
 // Default description output for a sensor
 SensorBase.prototype.description = function() {
   return this.unixTime.toISOString() + ' ' + this.ID
-         + ' (' + this.name+ ') ' + this.debugString()
+         + ' (' + this.name+ ') ' + this.debugString() + 'isBatteryOk : '
+         + this.batteryOk;                    
 }
 
 // no data for an unknown sensor
@@ -478,6 +490,15 @@ Sensor_ID0b.prototype.getTXAndBufferOffset = function() {
   this.tx = this.buffer.readUInt32BE(12) >> 8;
   this.bufferOffset = 15;
 };
+
+Sensor_ID0b.prototype.getBatteryLevel = function() {
+  if(this.buffer.readUInt32BE(12)>>23 ==0){
+    this.batteryOk = true 
+  }else{
+    this.batteryOk = false
+  }
+};
+
 Sensor_ID0b.prototype.generateJSON = function(buffer) {
   const dir = (buffer.readUInt8(0) >> 4)
   const dirTable = ['N','NNE','NE','ENE'

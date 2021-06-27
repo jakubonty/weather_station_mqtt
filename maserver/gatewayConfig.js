@@ -141,7 +141,7 @@ module.exports = function(localIPv4Adress,gatewayIPv4Adress,proxyServerPort,gate
           console.log('### Update Mobile Alerts Gateway Proxy Settings');
 
           // build a set config buffer by copying everything out of the get config
-          var sendConfigBuffer = new Buffer(SET_CONFIG_SIZE);
+          var sendConfigBuffer = new Buffer.alloc(SET_CONFIG_SIZE);
           sendConfigBuffer.fill(0, 0x00, SET_CONFIG_SIZE);
           // Set Configuration command
           sendConfigBuffer.writeInt16BE(SET_CONFIG, 0x00);
@@ -185,7 +185,7 @@ module.exports = function(localIPv4Adress,gatewayIPv4Adress,proxyServerPort,gate
           udpSocket.send(sendConfigBuffer, PORT, BROADCAST_ADDR, function() {
 
             // reboot the gateway after a reconfig
-            var rebootGatewayCommand = new Buffer(REBOOT_SIZE);
+            var rebootGatewayCommand = new Buffer.alloc(REBOOT_SIZE);
             rebootGatewayCommand.fill(0, 0x00, REBOOT_SIZE);
             rebootGatewayCommand.writeInt16BE(REBOOT, 0x00);
             // copy the Mobile Alerts Gateway ID
@@ -209,7 +209,7 @@ module.exports = function(localIPv4Adress,gatewayIPv4Adress,proxyServerPort,gate
     // after the bind delay the request by 250ms
     setTimeout(function() {
       // find the Mobile Alerts Gateway
-      var findGatewayCommand = new Buffer(FIND_GATEWAYS_SIZE);
+      var findGatewayCommand = new Buffer.alloc(FIND_GATEWAYS_SIZE);
       findGatewayCommand.fill(0, 0x00, FIND_GATEWAYS_SIZE);
       findGatewayCommand.writeInt16BE(FIND_GATEWAYS, 0x00);
       findGatewayCommand.writeInt16BE(FIND_GATEWAYS_SIZE, 0x08);

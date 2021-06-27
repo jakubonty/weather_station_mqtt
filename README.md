@@ -7,15 +7,89 @@ To get it working you need to:
 2) install this Weather Station MQTT and configure it
 3) check logs addon logs
 4) list MQTT broker messages to get sensor: ```sudo apt-get install mosquitto-clients``` , ```mosquitto_sub -t "#" -h 192.168.0.123 -u username -P password```
-5) add sensors to configuration.yml
+5) add sensors to configuration.yaml
 ```
-sensor:
+
+Configuration.yaml example
+
+binary_sensor:
+  #wet sensor
   - platform: mqtt
-    name: bathroom_humidity
-    state_topic: MobileAlerts/1148a76fa501/json
-    unit_of_measurement: '%'
-    value_template: "{{value_json.humidity[0]}}"
+    name: "Sensor name"
+    payload_on: true
+    payload_off: false
+    state_topic: MobileAlerts/0123456789ab/json
+    availability:
+      - topic: MobileAlerts/0123456789ab/json/availability
+        payload_available: online
+        payload_not_available: offline
+    value_template: "{{value_json.isWet[0]}}" 
+    enabled_by_default: true 
+    unique_id: 0123456789abisWet                    
+    device_class: moisture
+    qos: 0
+    
+  #door sensor
+  - platform: mqtt
+    name: "Sensor name"
+    payload_on: true
+    payload_off: false 
+    state_topic: MobileAlerts/0123456789ab/json
+    availability:
+    - topic: MobileAlerts/0123456789ab/json/availability
+      payload_available: online
+      payload_not_available: offline
+    value_template: "{{value_json.isOpen[0]}}"
+    enabled_by_default: true
+    unique_id: 0123456789abdoor                    
+    device_class: door
+    qos: 0
+	  
+  #door sensor battery (same for all sensors)
+  - platform: mqtt
+    name: "Porte d'entrée"
+    payload_on: false 
+    payload_off: true 
+    state_topic: MobileAlerts/0123456789ab/json
+    availability:
+    - topic: MobileAlerts/0123456789ab/json/availability
+      payload_available: online
+      payload_not_available: offline
+    value_template: "{{value_json.isBatteryOk}}"
+    enabled_by_default: true
+    unique_id: 0123456789abbat                    
+    device_class: battery
+    qos: 0 
+
+# Analog sensors
+sensor:
+#humidity sensor
+- platform: mqtt
+  name: "Sensor name"
+  state_topic: MobileAlerts/0123456789ab/json
+  unique_id: 0123456789abhum
+  device_class: humidity
+  unit_of_measurement: '%'
+  value_template: "{{value_json.humidity[0]}}"
+  availability:
+    - topic: MobileAlerts/0123456789ab/json/availability
+      payload_available: online
+      payload_not_available: offline
+
+#temperature sensor
+- platform: mqtt
+  name: "Sensor name"
+  state_topic: MobileAlerts/0123456789ab/json
+  unique_id: 0123456789abtemp
+  device_class: temperature
+  unit_of_measurement: "°C"
+  value_template: "{{value_json.temperature[0]}}"
+  availability:   
+    - topic: MobileAlerts/0123456789ab/json/availability
+      payload_available: online
+      payload_not_available: offline	  	  
 ```
+
 
 Hints for the ```config.json``` keys:
   * **localIPv4Address:** if set to null, then default IP address discovery will be used, otherwise use specified IP address (use homeassistant ip)

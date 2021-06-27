@@ -84,13 +84,13 @@ function sendMQTTSensorOfflineStatus(sensor, isOffline) {
   }
 
   var json = sensor.json
-  json.offline = isOffline
-  const sensorName = nconf.get('sensors:'+sensor.ID)
-  if(sensorName)
-    console.log('### Offline state ',sensorName, JSON.stringify(json))
-  else
-    console.log('### Offline state ',sensorName, JSON.stringify(json))
+  json.offline = isOffline  
+  const sensorName = sensor.ID
 
+  console.log('### Offline state ',sensorName, JSON.stringify(json))
+  //Publish availibility status
+  mqttClient.publish(mqttHome + sensor.ID + '/json/availability','offline');
+  //Publish sensor status
   mqttClient.publish(mqttHome + sensor.ID + '/json', JSON.stringify(json));
 }
 
@@ -103,13 +103,15 @@ function sendMQTT(sensor) {
 
   var json = sensor.json
   json.offline = false
-  const sensorName = nconf.get('sensors:'+sensor.ID)
-  if(sensorName)
-    console.log(sensorName, mqttHome+sensor.ID+'/json', JSON.stringify(json))
-  else
-    console.log(sensorName, mqttHome+sensor.ID+'/json', JSON.stringify(json))
 
+  const sensorName = sensor.ID
+  
+  console.log(sensorName, mqttHome+sensor.ID+'/json', JSON.stringify(json))
+  //Publish availibility status
+  mqttClient.publish(mqttHome + sensor.ID + '/json/availability','online');
+  //Publish sensor status  
   mqttClient.publish(mqttHome + sensor.ID + '/json', JSON.stringify(json));
+
 /*    if(sensor.sensorType == 0x08) {
     var rain = 0;
     if(lastSensorMessages[sensor.ID]) {
@@ -164,10 +166,11 @@ const sensors = require('./sensors');
 var lastSensorMessages = {};
 try {
   sensorList = JSON.parse(fs.readFileSync('lastSensorMessages.json', 'utf8'));
+  
   for(sensorID in sensorList) {
-    buf = sensorList[sensorID].buffer;
+	buf = sensorList[sensorID].buffer;
     if(buf) {
-      lastSensorMessages[sensorID] = sensors.CreateSensorObject(new Buffer(buf.data));
+      lastSensorMessages[sensorID] = sensors.CreateSensorObject(new Buffer.from(buf.data));
       lastSensorMessages[sensorID].isOffline = sensorList[sensorID].isOffline
     }
   }
@@ -196,9 +199,10 @@ function processSensorData(buffer) {
 
     // check all sensors if they are considered offline
     // (no message within a given period)
+	
     for(sensorID in lastSensorMessages)
     {
-      // make sure we modify a copy
+	  // make sure we modify a copy
       var sensorTimeoutDate = new Date(lastSensorMessages[sensorID].unixTime);
       // add the timeout to the last time the sensor was transmitting
       // sensor timeout + a 7 minutes transmission buffer for the gateway

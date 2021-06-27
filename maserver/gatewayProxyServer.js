@@ -19,7 +19,7 @@ module.exports = function(localIPv4Adress,proxyServerPort
   // send a standard reply back to the Gateway.
   function sendReplyPackageFromServer(data,res) {
 
-    var buf = new Buffer(24);
+    var buf = new Buffer.alloc(24);
     buf.writeUInt32BE(420, 0);
     buf.writeUInt32BE(0, 4);
     // UTC seconds since 1.1.1970
@@ -66,7 +66,7 @@ module.exports = function(localIPv4Adress,proxyServerPort
     }
 
     if(processSensorData) {
-      const sensorDataBuf = new Buffer(packageSize);
+      const sensorDataBuf = new Buffer.alloc(packageSize);
       data.copy(sensorDataBuf, 0, offset, offset+packageSize);
       processSensorData(sensorDataBuf);
     }
