@@ -7,7 +7,7 @@ ENV LANG C.UTF-8
 COPY data/run.sh /
 COPY maserver/* /
 
-RUN apk add --no-cache nodejs-npm
+RUN apk add --no-cache npm
 RUN npm install
 RUN chmod a+x /run.sh
 
